@@ -47,7 +47,7 @@ function ctpagseguro_gateway_load() {
          */
         public $id = 'pagseguro';
         public $name = 'PagSeguro';
-        public $description = 'PagSeguro Gateway works by sending the user to PagSeguro to enter their payment information.';
+        public $description = __( 'PagSeguro Gateway works by sending the user to PagSeguro to enter their payment information.', 'ctpagseguro' );
         public $supported_currencies = array( 'BRL' );
         protected $pagseguro_checkout_url = 'https://ws.pagseguro.uol.com.br/v2/checkout/';
         protected $pagseguro_payment_url = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=';
