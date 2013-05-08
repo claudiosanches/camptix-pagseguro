@@ -2,10 +2,10 @@
 /**
  * Plugin Name: CampTix PagSeguro
  * Plugin URI: https://github.com/claudiosmweb/camptix-pagseguro
- * Description: PagSeguro Gateway for CampTix.
+ * Description: PagSeguro Gateway for CampTix
  * Author: claudiosanches
  * Author URI: http://claudiosmweb.com/
- * Version: 1.0.0
+ * Version: 1.1.0
  * License: GPLv2 or later
  * Text Domain: ctpagseguro
  * Domain Path: /languages/
@@ -29,7 +29,7 @@ add_action( 'plugins_loaded', 'ctpagseguro_gateway_load', 0 );
 
 function ctpagseguro_gateway_load() {
 
-    if ( ! class_exists( 'CampTix_Payment_Method' ) ) {
+    if ( ! class_exists( 'CampTix_Plugin' ) || ! class_exists( 'CampTix_Payment_Method' ) ) {
         add_action( 'admin_notices', 'ctpagseguro_woocommerce_fallback_notice' );
 
         return;
@@ -58,7 +58,7 @@ function ctpagseguro_gateway_load() {
         protected $options;
 
         /**
-         * Init the gataway options.
+         * Init the gataway.
          *
          * @return void
          */
@@ -70,6 +70,8 @@ function ctpagseguro_gateway_load() {
                 ),
                 $this->get_payment_options()
             );
+
+            add_action( 'template_redirect', array( $this, 'template_redirect' ) );
         }
 
         /**
@@ -101,6 +103,18 @@ function ctpagseguro_gateway_load() {
             }
 
             return $output;
+        }
+
+        public function template_redirect() {
+
+            // New version requests.
+            if ( ! isset( $_REQUEST['tix_payment_method'] ) || 'pagseguro' != $_REQUEST['tix_payment_method'] )
+                return;
+
+            if ( 'payment_return' == get_query_var( 'tix_action' ) ) {
+                $this->payment_return();
+            }
+
         }
 
         /**
@@ -184,6 +198,7 @@ function ctpagseguro_gateway_load() {
             }
 
             $this->log( __( 'Failed to generate the PagSeguro payment link', 'ctpagseguro' ), $order_id );
+
             return false;
         }
 
@@ -209,12 +224,12 @@ function ctpagseguro_gateway_load() {
             $order = $this->get_order( $payment_token );
             do_action( 'camptix_before_payment', $payment_token );
 
-            $payment_data = array(
-                'transaction_id' => 'tix-pagseguro-' . md5( sprintf( 'tix-pagseguro-%s-%s-%s', print_r( $order, true ), time(), rand( 1, 9999 ) ) ),
-                'transaction_details' => array(
-                    'raw' => array( 'payment_method' => 'pagseguro' ),
-                ),
-            );
+            // $payment_data = array(
+            //     'transaction_id' => 'tix-pagseguro-' . md5( sprintf( 'tix-pagseguro-%s-%s-%s', print_r( $order, true ), time(), rand( 1, 9999 ) ) ),
+            //     'transaction_details' => array(
+            //         'raw' => array( 'payment_method' => 'pagseguro' ),
+            //     ),
+            // );
 
             // Sets the PagSeguro item description.
             $item_description = __( 'Event', 'ctpagseguro' );
@@ -235,7 +250,11 @@ function ctpagseguro_gateway_load() {
                 'itemDescription1' => trim( substr( $item_description, 0, 95 ) ),
                 'itemAmount1'      => $this->money_format( $order['total'] ),
                 'itemQuantity1'    => '1',
-                // 'redirectURL'      => '',
+                'redirectURL'      => add_query_arg( array(
+                    'tix_action' => 'payment_return',
+                    'tix_payment_token' => $payment_token,
+                    'tix_payment_method' => 'pagseguro',
+                ), $this->get_tickets_url() ),
                 // 'notificationURL'  => '',
             );
 
@@ -245,8 +264,18 @@ function ctpagseguro_gateway_load() {
             if ( $pagseguro_order ) {
                 wp_redirect( esc_url_raw( $this->pagseguro_payment_url . $pagseguro_order ) );
             } else {
-                return $this->payment_result( $payment_token, $camptix::PAYMENT_STATUS_FAILED );
+                return $this->payment_result( $payment_token, CampTix_Plugin::PAYMENT_STATUS_FAILED );
             }
+        }
+
+        /**
+         * Process the payment return.
+         */
+        protected function payment_return() {
+
+            $payment_token = ( isset( $_REQUEST['tix_payment_token'] ) ) ? trim( $_REQUEST['tix_payment_token'] ) : '';
+
+            return $this->payment_result( $payment_token, CampTix_Plugin::PAYMENT_STATUS_PENDING );
         }
     }
 
