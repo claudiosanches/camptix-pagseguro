@@ -16,7 +16,7 @@
  */
 function ctpagseguro_woocommerce_fallback_notice() {
     $html = '<div class="error">';
-        $html .= '<p>' . __( 'CampTix PagSeguro Gateway depends on the last version of <a href="http://wordpress.org/extend/plugins/camptix/">CampTix</a> to work!', 'ctpagseguro' ) . '</p>';
+        $html .= '<p>' . sprintf( __( 'CampTix PagSeguro Gateway depends on the last version of %s to work!', 'ctpagseguro' ), '<a href="http://wordpress.org/extend/plugins/camptix/">CampTix</a>' ) . '</p>';
     $html .= '</div>';
 
     echo $html;
