@@ -104,6 +104,41 @@ function ctpagseguro_gateway_load() {
         }
 
         /**
+         * Get order ID.
+         *
+         * @param  string $payment_token Payment Token
+         *
+         * @return int                   Order ID.
+         */
+        protected function get_order_id( $payment_token ) {
+            if ( ! $payment_token ) {
+                return 0;
+            }
+
+            $attendees = get_posts(
+                array(
+                    'posts_per_page' => 1,
+                    'post_type' => 'tix_attendee',
+                    'post_status' => 'any',
+                    'meta_query' => array(
+                        array(
+                            'key' => 'tix_payment_token',
+                            'compare' => '=',
+                            'value' => $payment_token,
+                            'type' => 'CHAR',
+                        ),
+                    ),
+                )
+            );
+
+            if ( ! $attendees ) {
+                return 0;
+            }
+
+            return (int) $attendees[0]->ID;
+        }
+
+        /**
          * PagSeguro money format.
          *
          * @param  int   $number Current number.
@@ -117,12 +152,14 @@ function ctpagseguro_gateway_load() {
         /**
          * Generate the PagSeguro order.
          *
-         * @param  array $args Payment arguments.
+         * @param  array  $args          Payment arguments.
+         * @param  string $payment_token Payment token.
          *
-         * @return mixed       Code of payment or false if it fails.
+         * @return mixed                 Code of payment or false if it fails.
          */
-        protected function generate_order( $args ) {
+        protected function generate_order( $args, $payment_token ) {
             $body = http_build_query( $args, '', '&' );
+            $order_id = $this->get_order_id( $payment_token );
 
             // Sets the post params.
             $params = array(
@@ -139,11 +176,14 @@ function ctpagseguro_gateway_load() {
 
                 $data = new SimpleXmlElement( $response['body'], LIBXML_NOCDATA );
 
+                $this->log( __( 'PagSeguro payment link created with success!', 'ctpagseguro' ), $order_id );
+
                 // Payment code.
                 return (string) $data->code;
 
             }
 
+            $this->log( __( 'Failed to generate the PagSeguro payment link', 'ctpagseguro' ), $order_id );
             return false;
         }
 
@@ -199,8 +239,7 @@ function ctpagseguro_gateway_load() {
                 // 'notificationURL'  => '',
             );
 
-            $pagseguro_order = $this->generate_order( $pagseguro_args );
-            // echo '<pre>' . print_r( $pagseguro_args, true ) . '</pre>'; exit;
+            $pagseguro_order = $this->generate_order( $pagseguro_args, $payment_token );
             // echo '<pre>' . print_r( $pagseguro_order, true ) . '</pre>'; exit;
 
             if ( $pagseguro_order ) {
