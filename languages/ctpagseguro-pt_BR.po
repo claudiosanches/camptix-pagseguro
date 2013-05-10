@@ -1,0 +1,99 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CampTix PagSeguro v1.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-05-10 22:53:05+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: camptix-pagseguro.php:41
+#, php-format
+#@ ctpagseguro
+msgid "CampTix PagSeguro Gateway depends on the last version of %s to work!"
+msgstr "O Método de Pagamento PagSeguro para CampTix depende da última versão do %s para funcionar!"
+
+#: camptix-pagseguro.php:109
+#@ ctpagseguro
+msgid "Email"
+msgstr "E-mail"
+
+#: camptix-pagseguro.php:311
+#@ ctpagseguro
+msgid "Event"
+msgstr "Evento"
+
+#: camptix-pagseguro.php:238
+#@ ctpagseguro
+msgid "Failed to generate the PagSeguro payment link"
+msgstr "Falha ao gerar o link para pagamento do PagSeguro"
+
+#: camptix-pagseguro.php:98
+#@ ctpagseguro
+msgid "PagSeguro Gateway works by sending the user to PagSeguro to enter their payment information."
+msgstr "O Método de Pagamento PagSeguro funciona enviando o usuário à página do PagSeguro para preencher suas informações de pagamento."
+
+#: camptix-pagseguro.php:231
+#@ ctpagseguro
+msgid "PagSeguro payment link created with success!"
+msgstr "Link para pagamento do PagSeguro criado com sucesso!"
+
+#: camptix-pagseguro.php:296
+#@ ctpagseguro
+msgid "The selected currency is not supported by this payment method."
+msgstr "A moeda selecionada não é suportada por esse método de pagamento."
+
+#: camptix-pagseguro.php:110
+#@ ctpagseguro
+msgid "Token"
+msgstr "Token"
+
+#. translators: plugin header field 'Name'
+#: camptix-pagseguro.php:0
+#@ ctpagseguro
+msgid "CampTix PagSeguro"
+msgstr "CampTix PagSeguro"
+
+#. translators: plugin header field 'PluginURI'
+#: camptix-pagseguro.php:0
+#@ ctpagseguro
+msgid "https://github.com/claudiosmweb/camptix-pagseguro"
+msgstr "https://github.com/claudiosmweb/camptix-pagseguro"
+
+#. translators: plugin header field 'Description'
+#: camptix-pagseguro.php:0
+#@ ctpagseguro
+msgid "PagSeguro Gateway for CampTix"
+msgstr "PagSeguro Gateway para CampTix"
+
+#. translators: plugin header field 'Author'
+#: camptix-pagseguro.php:0
+#@ ctpagseguro
+msgid "claudiosanches, rafaelfunchal"
+msgstr "claudiosanches, rafaelfunchal"
+
+#. translators: plugin header field 'AuthorURI'
+#: camptix-pagseguro.php:0
+#@ ctpagseguro
+msgid "http://claudiosmweb.com/"
+msgstr "http://claudiosmweb.com/"
+
+#. translators: plugin header field 'Version'
+#: camptix-pagseguro.php:0
+#@ ctpagseguro
+msgid "1.1.0"
+msgstr "1.1.0"
+
