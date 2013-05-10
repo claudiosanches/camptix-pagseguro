@@ -1,5 +1,5 @@
 === CampTix PagSeguro ===
-Contributors: claudiosanches
+Contributors: claudiosanches, rafaelfunchal
 Donate link: http://claudiosmweb.com/doacoes/
 Tags: camptix, pagseguro
 Requires at least: 3.0
