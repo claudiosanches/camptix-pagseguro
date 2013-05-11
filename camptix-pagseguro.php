@@ -3,7 +3,7 @@
  * Plugin Name: CampTix PagSeguro
  * Plugin URI: https://github.com/claudiosmweb/camptix-pagseguro
  * Description: PagSeguro Gateway for CampTix
- * Author: claudiosanches
+ * Author: claudiosanches, rafaelfunchal
  * Author URI: http://claudiosmweb.com/
  * Version: 1.1.0
  * License: GPLv2 or later
@@ -40,6 +40,9 @@ function ctpagseguro_gateway_load() {
      */
     load_plugin_textdomain( 'ctpagseguro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
+    /**
+     * CampTix_Payment_Method_PagSeguro class.
+     */
     class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
         /**
@@ -116,9 +119,9 @@ function ctpagseguro_gateway_load() {
          */
         public function template_redirect() {
 
-            // Force payment notify.
+            // Payment notify.
             if ( isset( $_POST['notificationCode'] ) && isset( $_POST['notificationType'] ) ) {
-                // $this->payment_notify();
+                $this->payment_notify();
             }
 
             // Test the request.
@@ -134,22 +137,22 @@ function ctpagseguro_gateway_load() {
         }
 
         /**
-         * Get order ID.
+         * Get order status.
          *
          * @param  string $payment_token Payment Token
          *
-         * @return int                   Order ID.
+         * @return ixed                  Order status or false.
          */
-        protected function get_order_id( $payment_token ) {
+        protected function get_order_status( $payment_token ) {
             if ( ! $payment_token ) {
                 return 0;
             }
 
             $attendees = get_posts(
                 array(
-                    'posts_per_page' => 1,
+                    'posts_per_page' => -1,
                     'post_type' => 'tix_attendee',
-                    'post_status' => 'any',
+                    'post_status' => array( 'draft', 'pending', 'publish', 'cancel', 'refund', 'failed' ),
                     'meta_query' => array(
                         array(
                             'key' => 'tix_payment_token',
@@ -162,10 +165,10 @@ function ctpagseguro_gateway_load() {
             );
 
             if ( ! $attendees ) {
-                return 0;
+                return false;
             }
 
-            return (int) $attendees[0]->ID;
+            return $attendees[0]->post_status;
         }
 
         /**
@@ -189,7 +192,6 @@ function ctpagseguro_gateway_load() {
          */
         protected function generate_order( $args, $payment_token ) {
             $body = http_build_query( $args, '', '&' );
-            $order_id = $this->get_order_id( $payment_token );
 
             // Sets the post params.
             $params = array(
@@ -206,16 +208,57 @@ function ctpagseguro_gateway_load() {
 
                 $data = new SimpleXmlElement( $response['body'], LIBXML_NOCDATA );
 
-                $this->log( __( 'PagSeguro payment link created with success!', 'ctpagseguro' ), $order_id );
+                $this->log( __( 'PagSeguro payment link created with success!', 'ctpagseguro' ), 0, $response );
 
                 // Payment code.
                 return (string) $data->code;
-
             }
 
-            $this->log( __( 'Failed to generate the PagSeguro payment link', 'ctpagseguro' ), $order_id );
+            $this->log( __( 'Failed to generate the PagSeguro payment link', 'ctpagseguro' ), 0, $response );
 
             return false;
+        }
+
+        /**
+         * Check notify.
+         *
+         * @param  string $code PagSeguro transaction code.
+         *
+         * @return mixed        On success returns an array with the payment data or failure returns false.
+         */
+        protected function check_notify( $code ) {
+
+            // Generate the PagSeguro url.
+            $url = sprintf(
+                '%s%s?email=%s&token=%s',
+                $this->pagseguro_notify_url,
+                esc_attr( $code ),
+                $this->options['email'],
+                $this->options['token']
+            );
+
+            // Sets the post params.
+            $params = array(
+                'sslverify' => false,
+                'timeout'   => 30
+            );
+
+            // Gets the PagSeguro response.
+            $response = wp_remote_get( $url, $params );
+
+            // Check to see if the request was valid.
+            if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
+                // Read the PagSeguro return.
+                $data = new SimpleXmlElement( $response['body'], LIBXML_NOCDATA );
+
+                $this->log( sprintf( 'Received PagSeguro IPN with success. PagSeguro Payment Code: %s', $code ), 0, $response );
+
+                return $data;
+            } else {
+                $this->log( sprintf( 'Could not verify PagSeguro IPN. PagSeguro Payment Code: %s', $code ), 0, $response );
+
+                return false;
+            }
         }
 
         /**
@@ -239,13 +282,6 @@ function ctpagseguro_gateway_load() {
             // Process $order and do something.
             $order = $this->get_order( $payment_token );
             do_action( 'camptix_before_payment', $payment_token );
-
-            // $payment_data = array(
-            //     'transaction_id' => 'tix-pagseguro-' . md5( sprintf( 'tix-pagseguro-%s-%s-%s', print_r( $order, true ), time(), rand( 1, 9999 ) ) ),
-            //     'transaction_details' => array(
-            //         'raw' => array( 'payment_method' => 'pagseguro' ),
-            //     ),
-            // );
 
             // Sets the PagSeguro item description.
             $item_description = __( 'Event', 'ctpagseguro' );
@@ -290,68 +326,96 @@ function ctpagseguro_gateway_load() {
         }
 
         /**
+         * Convert payment statuses from PagSeguro responses, to CampTix payment statuses.
+         *
+         * @param  int $payment_status PagSeguro payment status.
+         *
+         * @return int                 CampTix payment status.
+         */
+        protected function get_status_from_string( $payment_status ) {
+            $statuses = array(
+                1 => CampTix_Plugin::PAYMENT_STATUS_PENDING,
+                2 => CampTix_Plugin::PAYMENT_STATUS_PENDING,
+                3 => CampTix_Plugin::PAYMENT_STATUS_COMPLETED,
+                4 => CampTix_Plugin::PAYMENT_STATUS_COMPLETED,
+                5 => CampTix_Plugin::PAYMENT_STATUS_REFUNDED,
+                6 => CampTix_Plugin::PAYMENT_STATUS_REFUNDED,
+                7 => CampTix_Plugin::PAYMENT_STATUS_CANCELLED,
+            );
+
+            // Return pending for unknows statuses.
+            if ( ! isset( $statuses[ $payment_status ] ) ) {
+                $payment_status = 1;
+            }
+
+            return $statuses[ $payment_status ];
+        }
+
+        /**
          * Process the payment return.
+         *
+         * @return void  Update the order status and/or redirect to order page.
          */
         protected function payment_return() {
 
             $payment_token = ( isset( $_REQUEST['tix_payment_token'] ) ) ? trim( $_REQUEST['tix_payment_token'] ) : '';
 
-            return $this->payment_result( $payment_token, CampTix_Plugin::PAYMENT_STATUS_PENDING );
+            $current_status = $this->get_order_status( $payment_token );
+
+            if ( 'draft' == $current_status ) {
+                return $this->payment_result( $payment_token, CampTix_Plugin::PAYMENT_STATUS_PENDING );
+            } else {
+                if ( $current_status ) {
+                    // Redirects if the status has been changed by IPN.
+                    $attendees = get_posts(
+                        array(
+                            'posts_per_page' => -1,
+                            'post_type' => 'tix_attendee',
+                            'post_status' => array( 'draft', 'pending', 'publish', 'cancel', 'refund', 'failed' ),
+                            'meta_query' => array(
+                                array(
+                                    'key' => 'tix_payment_token',
+                                    'compare' => '=',
+                                    'value' => $payment_token,
+                                    'type' => 'CHAR',
+                                ),
+                            ),
+                        )
+                    );
+
+                    $access_token = get_post_meta( $attendees[0]->ID, 'tix_access_token', true );
+                    $url = add_query_arg( array( 'tix_action' => 'access_tickets', 'tix_access_token' => $access_token ), $GLOBALS['camptix']->get_tickets_url() );
+                    wp_safe_redirect( $url . '#tix' );
+                    die();
+                }
+            }
         }
 
         /**
          * Process the payment notify.
+         *
+         * @return void  Update the order status.
          */
         public function payment_notify() {
 
-            $data = $this->check_notify( $_POST );
+            $data = $this->check_notify( $_POST['notificationCode'] );
 
-        }
+            if ( $data ) {
+                $payment_token = $data->reference;
+                $status = $this->get_status_from_string( $data->status );
 
-        /**
-         * Check notify.
-         */
-        protected function check_notify( $code ) {
+                $payment_data = array(
+                    'transaction_id' => (string) $data->code,
+                    'transaction_details' => array(
+                        'raw' => (array) $data,
+                    ),
+                );
 
-            // Generate the PagSeguro url.
-            $url = sprintf(
-                '%s/%s?email=%s&token=%s',
-                $this->pagseguro_notify_url,
-                esc_attr( $code ),
-                $this->options['email'],
-                $this->options['token']
-            );
-
-            // Sets the post params.
-            $params = array(
-                'sslverify' => false,
-                'timeout'   => 30
-            );
-
-            // Gets the PagSeguro response.
-            $response = wp_remote_get( $url, $params );
-
-            // Check to see if the request was valid.
-            if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
-
-                $data = new SimpleXmlElement( $response['body'], LIBXML_NOCDATA );
-                $payment_token = $data->transaction->reference;
-
-                // $order = $this->get_order( $payment_token );
-
-                // $this->log( __( 'PagSeguro payment link created with success!', 'ctpagseguro' ), $order_id );
-
-                // return (string) $data->code;
-                return $this->payment_result( $payment_token, CampTix_Plugin::PAYMENT_STATUS_PENDING );
-
+                return $this->payment_result( $payment_token, $status, $payment_data );
             }
-
-            // $this->log( __( 'Failed to generate the PagSeguro payment link', 'ctpagseguro' ), $order_id );
-
-            // return false;
         }
 
-    }
+    } // Close CampTix_Payment_Method_PagSeguro class.
 
     /**
      * Register the Gateway in CampTix.
