@@ -4,7 +4,7 @@ Donate link: http://claudiosmweb.com/doacoes/
 Tags: camptix, pagseguro
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,11 @@ Please notice that CampTix must be installed and active.
 * Only one account on [PagSeguro](http://pagseguro.uol.com.br/ "PagSeguro").
 
 == Changelog ==
+
+= 1.2.0 =
+
+* Added payment notify.
+* Added pt_BR translation.
 
 = 1.1.0 =
 
