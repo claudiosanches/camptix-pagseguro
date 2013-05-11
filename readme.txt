@@ -35,6 +35,10 @@ Please notice that CampTix must be installed and active.
 * CampTix installed and active
 * Only one account on [PagSeguro](http://pagseguro.uol.com.br/ "PagSeguro").
 
+== Screenshots ==
+
+1. Settings page
+
 == Changelog ==
 
 = 1.2.0 =
