@@ -302,21 +302,25 @@ function ctpagseguro_gateway_load() {
                 'itemId1'          => '0001',
                 'itemDescription1' => trim( substr( $item_description, 0, 95 ) ),
                 'itemAmount1'      => $this->money_format( $order['total'] ),
-                'itemQuantity1'    => '1',
-                'redirectURL'      => add_query_arg( array(
+                'itemQuantity1'    => '1'
+            );
+
+            // Checks if is localhost. PagSeguro not accept localhost urls!
+            if ( ! in_array( $_SERVER['HTTP_HOST'], array( 'localhost', '127.0.0.1' ) ) ) {
+                $pagseguro_args['redirectURL'] = add_query_arg( array(
                     'tix_action'         => 'payment_return',
                     'tix_payment_token'  => $payment_token,
                     'tix_payment_method' => 'pagseguro',
-                ), $this->get_tickets_url() ),
-                'notificationURL'  => add_query_arg( array(
+                ), $this->get_tickets_url() );
+
+                $pagseguro_args['notificationURL'] = add_query_arg( array(
                     'tix_action'         => 'payment_notify',
                     'tix_payment_token'  => $payment_token,
                     'tix_payment_method' => 'pagseguro',
-                ), $this->get_tickets_url() )
-            );
+                ), $this->get_tickets_url() );
+            }
 
             $pagseguro_order = $this->generate_order( $pagseguro_args, $payment_token );
-            // echo '<pre>' . print_r( $pagseguro_order, true ) . '</pre>'; exit;
 
             if ( $pagseguro_order ) {
                 wp_redirect( esc_url_raw( $this->pagseguro_payment_url . $pagseguro_order ) );
