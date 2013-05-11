@@ -70,6 +70,8 @@ Com o plugin instalado acesse o admin do WordPress e entre em `CampTix > Setup >
 
 Habilite o PagSeguro e adicione o seu e-mail e o token cadastrados no PagSeguro.
 
+**Atenção: O PagSeguro não faz redirecionamentos ou retorno de dados se você estiver em localhost!**
+
 ## Frequently Asked Questions ##
 
 ### What is the plugin license? ###
@@ -121,6 +123,12 @@ Consulte: [PagSeguro - Tabela de Limites](https://pagseguro.uol.com.br/account/l
 ### Como que plugin faz integração com PagSeguro? ###
 
 Fazemos a integração baseada na documentação oficial do PagSeguro que pode ser encontrada em "[Guia de integração - PagSeguro](https://pagseguro.uol.com.br/v2/guia-de-integracao/visao-geral.html)".
+
+### Porque o PagSeguro não redireciona depois do pagamento quando estou em Localhost? ###
+
+O PagSeguro não aceitar URLs de localhost.
+
+Para testar o retorno automático de dados é necessário publicar o site utilizando um domínio.
 
 ### Mais dúvidas relacionadas ao funcionamento do plugin? ###
 
