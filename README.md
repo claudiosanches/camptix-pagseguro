@@ -37,7 +37,7 @@ Confira o nosso guia de instalação e configuração do PagSeguro na aba [Insta
 Você pode esclarecer suas dúvidas usando:
 
 * A nossa sessão de [FAQ](http://wordpress.org/extend/plugins/camptix-pagseguro/faq/).
-* Criando um tópico no [GitHub](https://github.com/claudiosmweb/camptix-pagseguro).
+* Criando um tópico no repositório do plugin no [GitHub](https://github.com/claudiosmweb/camptix-pagseguro).
 * Criando um tópico no [fórum de ajuda do WordPress](http://wordpress.org/support/plugin/camptix-pagseguro) (apenas em inglês).
 
 ## Installation ##
