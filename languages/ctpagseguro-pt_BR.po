@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: CampTix PagSeguro v1.1.0\n"
+"Project-Id-Version: CampTix PagSeguro v1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-05-10 22:53:05+0000\n"
+"PO-Revision-Date: 2013-05-11 01:21:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,43 +20,43 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: camptix-pagseguro.php:41
+#: camptix-pagseguro.php:19
 #, php-format
 #@ ctpagseguro
 msgid "CampTix PagSeguro Gateway depends on the last version of %s to work!"
 msgstr "O Método de Pagamento PagSeguro para CampTix depende da última versão do %s para funcionar!"
 
-#: camptix-pagseguro.php:109
+#: camptix-pagseguro.php:90
 #@ ctpagseguro
 msgid "Email"
 msgstr "E-mail"
 
-#: camptix-pagseguro.php:311
+#: camptix-pagseguro.php:287
 #@ ctpagseguro
 msgid "Event"
 msgstr "Evento"
 
-#: camptix-pagseguro.php:238
+#: camptix-pagseguro.php:217
 #@ ctpagseguro
 msgid "Failed to generate the PagSeguro payment link"
 msgstr "Falha ao gerar o link para pagamento do PagSeguro"
 
-#: camptix-pagseguro.php:98
+#: camptix-pagseguro.php:79
 #@ ctpagseguro
 msgid "PagSeguro Gateway works by sending the user to PagSeguro to enter their payment information."
 msgstr "O Método de Pagamento PagSeguro funciona enviando o usuário à página do PagSeguro para preencher suas informações de pagamento."
 
-#: camptix-pagseguro.php:231
+#: camptix-pagseguro.php:211
 #@ ctpagseguro
 msgid "PagSeguro payment link created with success!"
 msgstr "Link para pagamento do PagSeguro criado com sucesso!"
 
-#: camptix-pagseguro.php:296
+#: camptix-pagseguro.php:279
 #@ ctpagseguro
 msgid "The selected currency is not supported by this payment method."
 msgstr "A moeda selecionada não é suportada por esse método de pagamento."
 
-#: camptix-pagseguro.php:110
+#: camptix-pagseguro.php:91
 #@ ctpagseguro
 msgid "Token"
 msgstr "Token"
@@ -94,6 +94,6 @@ msgstr "http://claudiosmweb.com/"
 #. translators: plugin header field 'Version'
 #: camptix-pagseguro.php:0
 #@ ctpagseguro
-msgid "1.1.0"
-msgstr "1.1.0"
+msgid "1.3.0"
+msgstr "1.3.0"
 
