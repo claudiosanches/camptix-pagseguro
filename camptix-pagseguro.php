@@ -5,7 +5,7 @@
  * Description: PagSeguro Gateway for CampTix
  * Author: claudiosanches, rafaelfunchal
  * Author URI: http://claudiosmweb.com/
- * Version: 1.3.0
+ * Version: 1.3.1
  * License: GPLv2 or later
  * Text Domain: ctpagseguro
  * Domain Path: /languages/
@@ -361,6 +361,7 @@ function ctpagseguro_gateway_load() {
          * @return void  Update the order status and/or redirect to order page.
          */
         protected function payment_return() {
+            global $camptix;
 
             $payment_token = ( isset( $_REQUEST['tix_payment_token'] ) ) ? trim( $_REQUEST['tix_payment_token'] ) : '';
 
@@ -388,7 +389,7 @@ function ctpagseguro_gateway_load() {
                     );
 
                     $access_token = get_post_meta( $attendees[0]->ID, 'tix_access_token', true );
-                    $url = add_query_arg( array( 'tix_action' => 'access_tickets', 'tix_access_token' => $access_token ), $GLOBALS['camptix']->get_tickets_url() );
+                    $url = add_query_arg( array( 'tix_action' => 'access_tickets', 'tix_access_token' => $access_token ), $camptix->get_tickets_url() );
                     wp_safe_redirect( $url . '#tix' );
                     die();
                 }
