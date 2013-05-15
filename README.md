@@ -4,7 +4,7 @@
 **Tags:** camptix, pagseguro  
 **Requires at least:** 3.0  
 **Tested up to:** 3.5.1  
-**Stable tag:** 1.3.0  
+**Stable tag:** 1.3.1  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -141,6 +141,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/contato/).
 
 
 ## Changelog ##
+
+### 1.3.1 - 15/05/2013 ###
+
+* Improved the payment_notify method.
 
 ### 1.3.0 ###
 
