@@ -76,13 +76,13 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
      */
     public function template_redirect() {
 
-        // Test the request.
-        if ( empty( $_REQUEST['tix_payment_method'] ) || 'pagseguro' !== $_REQUEST['tix_payment_method'] )
-            return;
-
         // Payment notify.
         if ( ! empty( $_POST['notificationCode'] ) && ! empty( $_POST['notificationType'] ) )
             return $this->payment_notify();
+
+        // Test the request.
+        if ( empty( $_REQUEST['tix_payment_method'] ) || 'pagseguro' !== $_REQUEST['tix_payment_method'] )
+            return;
 
         // Payment return.
         if ( 'payment_return' == get_query_var( 'tix_action' ) )
