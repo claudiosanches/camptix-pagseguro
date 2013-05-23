@@ -1,6 +1,11 @@
 <?php
 /**
- * CampTix_Payment_Method_PagSeguro class.
+ * CampTix PagSeguro Payment Class.
+ */
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+
+/**
+ * Implements the PagSeguro payment gateway.
  */
 class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
