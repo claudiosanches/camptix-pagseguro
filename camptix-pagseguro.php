@@ -13,6 +13,8 @@
 
 /**
  * CampTix fallback notice.
+ *
+ * @return string HTML Message.
  */
 function ctpagseguro_admin_notice() {
     $html = '<div class="error">';
@@ -24,6 +26,8 @@ function ctpagseguro_admin_notice() {
 
 /**
  * Load functions.
+ *
+ * @return void
  */
 function ctpagseguro_plugins_loaded() {
     load_plugin_textdomain( 'ctpagseguro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -38,6 +42,11 @@ function ctpagseguro_plugins_loaded() {
 
 add_action( 'plugins_loaded', 'ctpagseguro_plugins_loaded' );
 
+/**
+ * Include PagSeguro Payment on CampTix load addons.
+ *
+ * @return void
+ */
 function ctpagseguro_camptix_load_addons() {
     require_once plugin_dir_path( __FILE__ ) . 'payment-pagseguro.php';
 }
