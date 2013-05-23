@@ -2,9 +2,9 @@
 **Contributors:** claudiosanches, rafaelfunchal  
 **Donate link:** http://claudiosmweb.com/doacoes/  
 **Tags:** camptix, pagseguro  
-**Requires at least:** 3.0  
+**Requires at least:** 3.4  
 **Tested up to:** 3.5.1  
-**Stable tag:** 1.3.1  
+**Stable tag:** 1.4.0  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -142,6 +142,11 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/contato/).
 
 ## Changelog ##
 
+### 1.4.0 - 23/05/2013 ###
+
+* Reorganizing some files, refactoring, adding some additional checks, optimizing lookups (thanks Konstantin Kovshenin).
+* Improved again the payment notify.
+
 ### 1.3.1 - 15/05/2013 ###
 
 * Improved the payment_notify method.
@@ -149,7 +154,7 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/contato/).
 ### 1.3.0 ###
 
 * Created the screenshot.
-* Fixed issue with PagSeguro URLs in localhost
+* Fixed issue with PagSeguro URLs in localhost.
 
 ### 1.2.0 ###
 
