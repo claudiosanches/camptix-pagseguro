@@ -5,7 +5,7 @@
  * Description: PagSeguro Gateway for CampTix
  * Author: claudiosanches, rafaelfunchal
  * Author URI: http://claudiosmweb.com/
- * Version: 1.4.0
+ * Version: 1.5.0
  * License: GPLv2 or later
  * Text Domain: ctpagseguro
  * Domain Path: /languages/
@@ -50,3 +50,25 @@ add_action( 'plugins_loaded', 'ctpagseguro_plugins_loaded' );
 function ctpagseguro_camptix_load_addons() {
     require_once plugin_dir_path( __FILE__ ) . 'payment-pagseguro.php';
 }
+
+/**
+ * Adds custom settings url in plugins page.
+ *
+ * @param  array $links Default links.
+ *
+ * @return array        Default links and settings link.
+ */
+function ctpagseguro_action_links( $links ) {
+
+    $settings = array(
+        'settings' => sprintf(
+            '<a href="%s">%s</a>',
+            admin_url( 'edit.php?post_type=tix_ticket&page=camptix_options&tix_section=payment' ),
+            __( 'Settings', 'ctpagseguro' )
+        )
+    );
+
+    return array_merge( $settings, $links );
+}
+
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'ctpagseguro_action_links' );
