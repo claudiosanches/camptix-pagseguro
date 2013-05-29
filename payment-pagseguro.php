@@ -245,13 +245,13 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
     }
 
     /**
-     * Convert payment statuses from PagSeguro responses, to CampTix payment statuses.
+     * Convert payment statuses from PagSeguro responses to CampTix payment statuses.
      *
      * @param int $payment_status PagSeguro payment status.
      *
      * @return int                CampTix payment status.
      */
-    protected function get_status_from_string( $payment_status ) {
+    protected function get_payment_status( $payment_status ) {
         $statuses = array(
             1 => CampTix_Plugin::PAYMENT_STATUS_PENDING,
             2 => CampTix_Plugin::PAYMENT_STATUS_PENDING,
@@ -259,11 +259,11 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
             4 => CampTix_Plugin::PAYMENT_STATUS_COMPLETED,
             5 => CampTix_Plugin::PAYMENT_STATUS_REFUNDED,
             6 => CampTix_Plugin::PAYMENT_STATUS_REFUNDED,
-            7 => CampTix_Plugin::PAYMENT_STATUS_CANCELLED,
+            7 => CampTix_Plugin::PAYMENT_STATUS_CANCELLED
         );
 
         // Return pending for unknows statuses.
-        if ( empty( $statuses[ $payment_status ] ) )
+        if ( ! isset( $statuses[ $payment_status ] ) )
             $payment_status = 1;
 
         return $statuses[ $payment_status ];
@@ -328,8 +328,8 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
         $data = $this->check_notify( $_POST['notificationCode'] );
 
         if ( $data ) {
-            $payment_token = $data->reference;
-            $status = $this->get_status_from_string( $data->status );
+            $payment_token = (string) $data->reference;
+            $status = $this->get_payment_status( (int) $data->status );
 
             $payment_data = array(
                 'transaction_id' => (string) $data->code,
