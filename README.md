@@ -4,7 +4,7 @@
 **Tags:** camptix, pagseguro  
 **Requires at least:** 3.4  
 **Tested up to:** 3.5.1  
-**Stable tag:** 1.5.0  
+**Stable tag:** 1.5.1  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -141,6 +141,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/contato/).
 
 
 ## Changelog ##
+
+### 1.5.1 - 29/05/2013 ###
+
+* Fixed the get_payment_status method.
 
 ### 1.5.0 - 28/05/2013 ###
 
