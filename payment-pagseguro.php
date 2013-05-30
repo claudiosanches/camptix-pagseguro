@@ -334,9 +334,12 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
             $payment_data = array(
                 'transaction_id' => (string) $data->code,
                 'transaction_details' => array(
-                    'raw' => (array) $data,
+                    'raw' => array(
+                        'data' => (string) $data->date
+                    ),
                 ),
             );
+
 
             return $this->payment_result( $payment_token, $status, $payment_data );
         }
