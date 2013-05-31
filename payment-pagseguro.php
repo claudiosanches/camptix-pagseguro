@@ -130,7 +130,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
             $data = new SimpleXmlElement( $response['body'], LIBXML_NOCDATA );
 
-            $this->log( __( 'PagSeguro payment link created with success!', 'ctpagseguro' ), 0, $response );
+            $this->log( 'PagSeguro payment link created with success!', 0, $response );
 
             // Payment code.
             return (string) $data->code;
