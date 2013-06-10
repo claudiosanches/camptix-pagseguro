@@ -5,7 +5,7 @@
  * Description: PagSeguro Gateway for CampTix
  * Author: claudiosanches, rafaelfunchal
  * Author URI: http://claudiosmweb.com/
- * Version: 1.5.2
+ * Version: 1.5.3
  * License: GPLv2 or later
  * Text Domain: ctpagseguro
  * Domain Path: /languages/

@@ -4,7 +4,7 @@ Donate link: http://claudiosmweb.com/doacoes/
 Tags: camptix, pagseguro
 Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/contato/).
 
 == Changelog ==
 
+= 1.5.3 - 09/06/2013 =
+
+* Fixed the logs.
+
 = 1.5.2 - 30/05/2013 =
 
 * Fixed the payment_notify method.
@@ -182,9 +186,9 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/contato/).
 
 == Upgrade Notice ==
 
-= 1.0.0 =
+= 1.5.3 =
 
-* Initial version.
+* Fixed the logs.
 
 == License ==
 

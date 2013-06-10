@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: CampTix PagSeguro v1.4.0\n"
+"Project-Id-Version: CampTix PagSeguro v1.5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-05-28 04:57:05+0000\n"
+"PO-Revision-Date: 2013-06-10 01:10:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,11 +40,6 @@ msgstr "Evento"
 #@ ctpagseguro
 msgid "PagSeguro Gateway works by sending the user to PagSeguro to enter their payment information."
 msgstr "O Método de Pagamento PagSeguro funciona enviando o usuário à página do PagSeguro para preencher suas informações de pagamento."
-
-#: payment-pagseguro.php:133
-#@ ctpagseguro
-msgid "PagSeguro payment link created with success!"
-msgstr "Link para pagamento do PagSeguro criado com sucesso!"
 
 #: payment-pagseguro.php:198
 #@ ctpagseguro
@@ -86,14 +81,14 @@ msgstr "claudiosanches, rafaelfunchal"
 msgid "http://claudiosmweb.com/"
 msgstr "http://claudiosmweb.com/"
 
-#. translators: plugin header field 'Version'
-#: camptix-pagseguro.php:0
-#@ ctpagseguro
-msgid "1.5.0"
-msgstr "1.5.0"
-
 #: camptix-pagseguro.php:67
 #@ ctpagseguro
 msgid "Settings"
 msgstr "Configurações"
+
+#. translators: plugin header field 'Version'
+#: camptix-pagseguro.php:0
+#@ ctpagseguro
+msgid "1.5.3"
+msgstr "1.5.3"
 
