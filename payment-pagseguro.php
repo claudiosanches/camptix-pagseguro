@@ -86,7 +86,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
             return;
 
         // Payment return.
-        if ( 'payment_return' == get_query_var( 'tix_action' ) )
+        if ( isset( $_GET['tix_action'] ) && 'payment_return' == $_GET['tix_action'] )
             return $this->payment_return();
 
         // Payment notify.

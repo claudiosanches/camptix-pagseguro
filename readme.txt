@@ -4,7 +4,7 @@ Donate link: http://claudiosmweb.com/doacoes/
 Tags: camptix, pagseguro
 Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/contato/).
 
 == Changelog ==
 
+= 1.5.4 - 25/06/2013 =
+
+* Removed get_query_var() for tix_action in favor to $_GET (Issue [#4](https://github.com/claudiosmweb/camptix-pagseguro/issues/4)).
+
 = 1.5.3 - 09/06/2013 =
 
 * Fixed the logs.
@@ -186,9 +190,9 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/contato/).
 
 == Upgrade Notice ==
 
-= 1.5.3 =
+= 1.5.4 =
 
-* Fixed the logs.
+* Removed get_query_var() for tix_action in favor to $_GET.
 
 == License ==
 
