@@ -18,6 +18,10 @@ This plugin adds PagSeguro gateway to [CampTix](wordpress.org/extend/plugins/cam
 
 Please notice that CampTix must be installed and active.
 
+= Contribute =
+
+You can contribute to the source code in our [GitHub](https://github.com/claudiosmweb/camptix-pagseguro) page.
+
 ### Descrição em Português: ###
 
 Adicione o PagSeguro como método de pagamento em seu [CampTix](wordpress.org/extend/plugins/camptix/).
@@ -39,6 +43,10 @@ Você pode esclarecer suas dúvidas usando:
 * A nossa sessão de [FAQ](http://wordpress.org/extend/plugins/camptix-pagseguro/faq/).
 * Criando um tópico no repositório do plugin no [GitHub](https://github.com/claudiosmweb/camptix-pagseguro).
 * Criando um tópico no [fórum de ajuda do WordPress](http://wordpress.org/support/plugin/camptix-pagseguro) (apenas em inglês).
+
+= Coloborar =
+
+Você pode contribuir com código-fonte em nossa página no [GitHub](https://github.com/claudiosmweb/camptix-pagseguro).
 
 == Installation ==
 
