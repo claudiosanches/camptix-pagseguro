@@ -14,26 +14,61 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
 	/**
-	 * Payment variables.
+	 * Payment method ID.
+	 *
+	 * @var string
 	 */
 	public $id = 'pagseguro';
+
+	/**
+	 * Payment method name.
+	 *
+	 * @var string
+	 */
 	public $name = 'PagSeguro';
+
+	/**
+	 * Payment method description.
+	 *
+	 * @var string
+	 */
 	public $description = 'PagSeguro';
+
+	/**
+	 * Supported currencies.
+	 *
+	 * @var array
+	 */
 	public $supported_currencies = array( 'BRL' );
 
+	/**
+	 * PagSeguro checkout URL.
+	 *
+	 * @var string
+	 */
 	protected $pagseguro_checkout_url = 'https://ws.pagseguro.uol.com.br/v2/checkout/';
+
+	/**
+	 * PagSeguro Payment URL.
+	 *
+	 * @var string
+	 */
 	protected $pagseguro_payment_url = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=';
+
+	/**
+	 * PagSeguro notification URL.
+	 *
+	 * @var string
+	 */
 	protected $pagseguro_notify_url = 'https://ws.pagseguro.uol.com.br/v2/transactions/notifications/';
 
 	/**
-	 * Store the options.
+	 * Payment method options.
 	 */
 	protected $options;
 
 	/**
-	 * Init the gataway.
-	 *
-	 * @return void
+	 * Initialize the method.
 	 */
 	public function camptix_init() {
 		$this->options = array_merge(
@@ -44,15 +79,14 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 			$this->get_payment_options()
 		);
 
-		// Fix the description for translate.
-		$this->description = __( 'PagSeguro Gateway works by sending the user to PagSeguro to enter their payment information.', 'camptix-pagseguro' );
+		// Make description translatable.
+		$this->description = __( 'Receive payments by credit card, bank transfer and backing ticket using PagSeguro.', 'camptix-pagseguro' );
+
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 	}
 
 	/**
 	 * Sets payment settings fields.
-	 *
-	 * @return void
 	 */
 	public function payment_settings_fields() {
 		$this->add_settings_field_helper( 'email', __( 'Email', 'camptix-pagseguro' ), array( $this, 'field_text' ) );
@@ -69,33 +103,36 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 	public function validate_options( $input ) {
 		$output = $this->options;
 
-		if ( ! empty( $input['email'] ) && is_email( $input['email'] ) )
+		if ( ! empty( $input['email'] ) && is_email( $input['email'] ) ) {
 			$output['email'] = $input['email'];
+		}
 
-		if ( ! empty( $input['token'] ) )
+		if ( ! empty( $input['token'] ) ) {
 			$output['token'] = $input['token'];
+		}
 
 		return $output;
 	}
 
 	/**
 	 * Sets the template redirect.
-	 *
-	 * @return void
 	 */
 	public function template_redirect() {
 
 		// Test the request.
-		if ( empty( $_REQUEST['tix_payment_method'] ) || 'pagseguro' !== $_REQUEST['tix_payment_method'] )
+		if ( empty( $_REQUEST['tix_payment_method'] ) || 'pagseguro' !== $_REQUEST['tix_payment_method'] ) {
 			return;
+		}
 
 		// Payment return.
-		if ( isset( $_GET['tix_action'] ) && 'payment_return' == $_GET['tix_action'] )
+		if ( isset( $_GET['tix_action'] ) && 'payment_return' == $_GET['tix_action'] ) {
 			return $this->payment_return();
+		}
 
 		// Payment notify.
-		if ( ! empty( $_POST['notificationCode'] ) && ! empty( $_POST['notificationType'] ) )
+		if ( ! empty( $_POST['notificationCode'] ) && ! empty( $_POST['notificationType'] ) ) {
 			return $this->payment_notify();
+		}
 	}
 
 	/**
@@ -115,7 +152,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 	 * @param array  $args          Payment arguments.
 	 * @param string $payment_token Payment token.
 	 *
-	 * @return mixed                Code of payment or false if it fails.
+	 * @return string               Code of payment or empty string if it fails.
 	 */
 	protected function generate_order( $args, $payment_token ) {
 		$body = http_build_query( $args, '', '&' );
@@ -134,7 +171,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
 			$data = new SimpleXmlElement( $response['body'], LIBXML_NOCDATA );
 
-			$this->log( 'PagSeguro payment link created with success!', 0, $response );
+			$this->log( 'PagSeguro payment link created successfully!', 0, $response );
 
 			// Payment code.
 			return (string) $data->code;
@@ -150,7 +187,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 	 *
 	 * @param string $code PagSeguro transaction code.
 	 *
-	 * @return mixed       On success returns an array with the payment data or failure returns false.
+	 * @return array       On success returns an array with the payment data or failure returns an empty array.
 	 */
 	protected function check_notify( $code ) {
 
@@ -176,13 +213,13 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 			// Read the PagSeguro return.
 			$data = new SimpleXmlElement( $response['body'], LIBXML_NOCDATA );
 
-			$this->log( sprintf( 'Received PagSeguro IPN with success. PagSeguro Payment Code: %s', $code ), 0, $response );
-			return $data;
+			$this->log( sprintf( 'Received PagSeguro IPN successfully. PagSeguro Payment Code: %s', $code ), 0, $response );
 
-		} else {
-			$this->log( sprintf( 'Could not verify PagSeguro IPN. PagSeguro Payment Code: %s', $code ), 0, $response );
-			return false;
+			return $data;
 		}
+
+		$this->log( sprintf( 'Could not verify PagSeguro IPN. PagSeguro Payment Code: %s', $code ), 0, $response );
+		return array();
 	}
 
 	/**
@@ -195,11 +232,13 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 	public function payment_checkout( $payment_token ) {
 		global $camptix;
 
-		if ( empty( $payment_token ) )
+		if ( empty( $payment_token ) ) {
 			return false;
+		}
 
-		if ( ! in_array( $this->camptix_options['currency'], $this->supported_currencies ) )
+		if ( ! in_array( $this->camptix_options['currency'], $this->supported_currencies ) ) {
 			die( __( 'The selected currency is not supported by this payment method.', 'camptix-pagseguro' ) );
+		}
 
 		// Process $order and do something.
 		$order = $this->get_order( $payment_token );
@@ -207,11 +246,13 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
 		// Sets the PagSeguro item description.
 		$item_description = __( 'Event', 'camptix-pagseguro' );
-		if ( ! empty( $this->camptix_options['event_name'] ) )
+		if ( ! empty( $this->camptix_options['event_name'] ) ) {
 			$item_description = $this->camptix_options['event_name'];
+		}
 
-		foreach ( $order['items'] as $key => $value )
+		foreach ( $order['items'] as $key => $value ) {
 			$item_description .= sprintf( ', %sx %s %s', $value['quantity'], $value['name'], $this->currency_format( $value['price'] ) );
+		}
 
 		$pagseguro_args = array(
 			'email'            => $this->options['email'],
@@ -240,7 +281,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
 		$pagseguro_order = $this->generate_order( $pagseguro_args, $payment_token );
 
-		if ( $pagseguro_order ) {
+		if ( '' !== $pagseguro_order ) {
 			wp_redirect( esc_url_raw( $this->pagseguro_payment_url . $pagseguro_order ) );
 			die();
 		} else {
@@ -267,8 +308,9 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 		);
 
 		// Return pending for unknows statuses.
-		if ( ! isset( $statuses[ $payment_status ] ) )
+		if ( ! isset( $statuses[ $payment_status ] ) ) {
 			$payment_status = 1;
+		}
 
 		return $statuses[ $payment_status ];
 	}
@@ -276,14 +318,15 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 	/**
 	 * Process the payment return.
 	 *
-	 * @return void Update the order status and/or redirect to order page.
+	 * @return mixed Update the order status and/or redirect to order page.
 	 */
 	protected function payment_return() {
 		global $camptix;
 
-		$payment_token = ( ! empty( $_REQUEST['tix_payment_token'] ) ) ? trim( $_REQUEST['tix_payment_token'] ) : '';
-		if ( empty( $payment_token ) )
+		$payment_token = ! empty( $_REQUEST['tix_payment_token'] ) ? trim( $_REQUEST['tix_payment_token'] ) : '';
+		if ( empty( $payment_token ) ) {
 			return;
+		}
 
 		$attendees = get_posts(
 			array(
@@ -301,8 +344,9 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 			)
 		);
 
-		if ( empty( $attendees ) )
+		if ( empty( $attendees ) ) {
 			return;
+		}
 
 		$attendee = reset( $attendees );
 
@@ -311,7 +355,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 		} else {
 			$access_token = get_post_meta( $attendee->ID, 'tix_access_token', true );
 			$url = add_query_arg( array(
-				'tix_action' => 'access_tickets',
+				'tix_action'       => 'access_tickets',
 				'tix_access_token' => $access_token,
 			), $camptix->get_tickets_url() );
 
@@ -322,16 +366,15 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
 	/**
 	 * Process the payment notify.
-	 *
-	 * @return void Update the order status.
 	 */
 	public function payment_notify() {
-		if ( empty( $_POST['notificationCode' ] ) )
+		if ( empty( $_POST['notificationCode' ] ) ) {
 			return;
+		}
 
 		$data = $this->check_notify( $_POST['notificationCode'] );
 
-		if ( $data ) {
+		if ( ! empty( $data ) ) {
 			$payment_token = (string) $data->reference;
 			$status = $this->get_payment_status( (int) $data->status );
 
@@ -344,14 +387,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 				),
 			);
 
-
 			return $this->payment_result( $payment_token, $status, $payment_data );
 		}
 	}
-
-} // Close CampTix_Payment_Method_PagSeguro class.
-
-/**
- * Register the Gateway in CampTix.
- */
-camptix_register_addon( 'CampTix_Payment_Method_PagSeguro' );
+}

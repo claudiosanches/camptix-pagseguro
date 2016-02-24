@@ -79,6 +79,8 @@ class CampTix_PagSeguro {
 	 */
 	public function load_addons() {
 		require_once 'includes/class-payment-method-pagseguro.php';
+
+		camptix_register_addon( 'CampTix_Payment_Method_PagSeguro' );
 	}
 
 	/**
