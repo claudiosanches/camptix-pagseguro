@@ -48,7 +48,7 @@ add_action( 'plugins_loaded', 'ctpagseguro_plugins_loaded' );
  * @return void
  */
 function ctpagseguro_camptix_load_addons() {
-    require_once plugin_dir_path( __FILE__ ) . 'payment-pagseguro.php';
+    require_once 'includes/class-payment-method-pagseguro.php';
 }
 
 /**

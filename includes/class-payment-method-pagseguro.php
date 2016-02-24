@@ -2,7 +2,9 @@
 /**
  * CampTix PagSeguro Payment Class.
  */
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Implements the PagSeguro payment gateway.
