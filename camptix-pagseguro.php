@@ -5,70 +5,107 @@
  * Description: PagSeguro Gateway for CampTix
  * Author: claudiosanches, rafaelfunchal
  * Author URI: http://claudiosmweb.com/
- * Version: 1.5.4
+ * Version: 1.5.5
  * License: GPLv2 or later
  * Text Domain: camptix-pagseguro
  * Domain Path: /languages/
  */
 
-/**
- * CampTix fallback notice.
- *
- * @return string HTML Message.
- */
-function ctpagseguro_admin_notice() {
-	$html = '<div class="error">';
-		$html .= '<p>' . sprintf( __( 'CampTix PagSeguro Gateway depends on the last version of %s to work!', 'camptix-pagseguro' ), '<a href="http://wordpress.org/extend/plugins/camptix/">CampTix</a>' ) . '</p>';
-	$html .= '</div>';
-
-	echo $html;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-/**
- * Load functions.
- *
- * @return void
- */
-function ctpagseguro_plugins_loaded() {
-	load_plugin_textdomain( 'camptix-pagseguro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+if ( ! class_exists( 'CampTix_PagSeguro' ) ) :
 
-	if ( ! class_exists( 'CampTix_Plugin' ) || ! class_exists( 'CampTix_Payment_Method' ) ) {
-		add_action( 'admin_notices', 'ctpagseguro_admin_notice' );
-		return;
+/**
+ * CampTix PagSeguro main class.
+ *
+ * @package CampTix_PagSeguro
+ */
+class CampTix_PagSeguro {
+
+	/**
+	 * Plugin version.
+	 *
+	 * @var string
+	 */
+	const VERSION = '1.5.5';
+
+	/**
+	 * Instance of this class.
+	 *
+	 * @var object
+	 */
+	protected static $instance = null;
+
+	/**
+	 * Initialize the plugin actions.
+	 */
+	private function __construct() {
+		// Load plugin text domain.
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+
+		if ( class_exists( 'CampTix_Payment_Method' ) ) {
+			$this->includes();
+
+			add_action( 'camptix_load_addons', 'load_addons' );
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
+		} else {
+			add_action( 'admin_notices', array( $this, 'missing_dependencies_notice' ) );
+		}
 	}
 
-	add_action( 'camptix_load_addons', 'ctpagseguro_camptix_load_addons' );
+	/**
+	 * Return an instance of this class.
+	 *
+	 * @return object A single instance of this class.
+	 */
+	public static function get_instance() {
+		// If the single instance hasn't been set, set it now.
+		if ( null == self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Load the plugin text domain for translation.
+	 */
+	public function load_plugin_textdomain() {
+		load_plugin_textdomain( 'camptix-pagseguro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Load CampTix addons.
+	 */
+	public function load_addons() {
+		require_once 'includes/class-payment-method-pagseguro.php';
+	}
+
+	/**
+	 * Action links.
+	 *
+	 * @param  array $links
+	 *
+	 * @return array
+	 */
+	public function plugin_action_links( $links ) {
+		$plugin_links = array();
+
+		$plugin_links[] = '<a href="' . esc_url( admin_url( 'edit.php?post_type=tix_ticket&page=camptix_options&tix_section=payment' ) ) . '">' . __( 'Settings', 'camptix-pagseguro' ) . '</a>';
+
+		return array_merge( $plugin_links, $links );
+	}
+
+	/**
+	 * Missing dependencies notice.
+	 */
+	public function missing_dependencies_notice() {
+		include_once 'includes/admin/views/html-notice-missing-camptix.php';
+	}
 }
 
-add_action( 'plugins_loaded', 'ctpagseguro_plugins_loaded' );
+add_action( 'plugins_loaded', array( 'CampTix_PagSeguro', 'get_instance' ) );
 
-/**
- * Include PagSeguro Payment on CampTix load addons.
- *
- * @return void
- */
-function ctpagseguro_camptix_load_addons() {
-	require_once 'includes/class-payment-method-pagseguro.php';
-}
-
-/**
- * Adds custom settings url in plugins page.
- *
- * @param  array $links Default links.
- *
- * @return array        Default links and settings link.
- */
-function ctpagseguro_action_links( $links ) {
-
-	$settings = array(
-		'settings' => sprintf(
-			'<a href="%s">%s</a>',
-			admin_url( 'edit.php?post_type=tix_ticket&page=camptix_options&tix_section=payment' ),
-			__( 'Settings', 'camptix-pagseguro' )
-		)
-	);
-
-	return array_merge( $settings, $links );
-}
-
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'ctpagseguro_action_links' );
+endif;

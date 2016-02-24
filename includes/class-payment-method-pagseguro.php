@@ -8,6 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Implements the PagSeguro payment gateway.
+ *
+ * @package CampTix_PagSeguro/Payment_Method
  */
 class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 
