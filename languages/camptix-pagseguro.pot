@@ -1,0 +1,73 @@
+# Copyright (C) 2016 claudiosanches, rafaelfunchal
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: CampTix PagSeguro 1.5.5\n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/camptix-pagseguro\n"
+"POT-Creation-Date: 2016-02-24 02:30:35+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.5.3\n"
+
+#: camptix-pagseguro.php:96
+msgid "Settings"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "CampTix PagSeguro"
+msgstr ""
+
+#: includes/admin/views/html-notice-missing-camptix.php:22
+msgid "depends on the last version of CampTix to work!"
+msgstr ""
+
+#: includes/admin/views/html-notice-missing-camptix.php:25
+msgid "Active CampTix"
+msgstr ""
+
+#: includes/admin/views/html-notice-missing-camptix.php:33
+msgid "Install CampTix"
+msgstr ""
+
+#: includes/class-payment-method-pagseguro.php:83
+msgid ""
+"Receive payments by credit card, bank transfer and backing ticket using "
+"PagSeguro."
+msgstr ""
+
+#: includes/class-payment-method-pagseguro.php:92
+msgid "Email"
+msgstr ""
+
+#: includes/class-payment-method-pagseguro.php:93
+msgid "Token"
+msgstr ""
+
+#: includes/class-payment-method-pagseguro.php:240
+msgid "The selected currency is not supported by this payment method."
+msgstr ""
+
+#: includes/class-payment-method-pagseguro.php:248
+msgid "Event"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/claudiosmweb/camptix-pagseguro"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "PagSeguro Gateway for CampTix"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "claudiosanches, rafaelfunchal"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://claudiosmweb.com/"
+msgstr ""
