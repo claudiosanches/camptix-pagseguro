@@ -1,11 +1,11 @@
-# Copyright (C) 2016 claudiosanches, rafaelfunchal
+# Copyright (C) 2016 Claudio Sanches
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: CampTix PagSeguro 1.5.5\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/camptix-pagseguro\n"
-"POT-Creation-Date: 2016-02-24 02:30:35+00:00\n"
+"POT-Creation-Date: 2016-02-24 02:36:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -65,9 +65,9 @@ msgid "PagSeguro Gateway for CampTix"
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "claudiosanches, rafaelfunchal"
+msgid "Claudio Sanches"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "http://claudiosmweb.com/"
+msgid "https://claudiosmweb.com/"
 msgstr ""

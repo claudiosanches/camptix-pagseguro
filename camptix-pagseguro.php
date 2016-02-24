@@ -3,8 +3,8 @@
  * Plugin Name: CampTix PagSeguro
  * Plugin URI: https://github.com/claudiosmweb/camptix-pagseguro
  * Description: PagSeguro Gateway for CampTix
- * Author: claudiosanches, rafaelfunchal
- * Author URI: http://claudiosmweb.com/
+ * Author: Claudio Sanches
+ * Author URI: https://claudiosmweb.com/
  * Version: 1.5.5
  * License: GPLv2 or later
  * Text Domain: camptix-pagseguro
