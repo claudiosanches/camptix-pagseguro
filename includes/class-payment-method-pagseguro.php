@@ -43,7 +43,7 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 		);
 
 		// Fix the description for translate.
-		$this->description = __( 'PagSeguro Gateway works by sending the user to PagSeguro to enter their payment information.', 'ctpagseguro' );
+		$this->description = __( 'PagSeguro Gateway works by sending the user to PagSeguro to enter their payment information.', 'camptix-pagseguro' );
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 	}
 
@@ -53,8 +53,8 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 	 * @return void
 	 */
 	public function payment_settings_fields() {
-		$this->add_settings_field_helper( 'email', __( 'Email', 'ctpagseguro' ), array( $this, 'field_text' ) );
-		$this->add_settings_field_helper( 'token', __( 'Token', 'ctpagseguro' ), array( $this, 'field_text' ) );
+		$this->add_settings_field_helper( 'email', __( 'Email', 'camptix-pagseguro' ), array( $this, 'field_text' ) );
+		$this->add_settings_field_helper( 'token', __( 'Token', 'camptix-pagseguro' ), array( $this, 'field_text' ) );
 	}
 
 	/**
@@ -197,14 +197,14 @@ class CampTix_Payment_Method_PagSeguro extends CampTix_Payment_Method {
 			return false;
 
 		if ( ! in_array( $this->camptix_options['currency'], $this->supported_currencies ) )
-			die( __( 'The selected currency is not supported by this payment method.', 'ctpagseguro' ) );
+			die( __( 'The selected currency is not supported by this payment method.', 'camptix-pagseguro' ) );
 
 		// Process $order and do something.
 		$order = $this->get_order( $payment_token );
 		do_action( 'camptix_before_payment', $payment_token );
 
 		// Sets the PagSeguro item description.
-		$item_description = __( 'Event', 'ctpagseguro' );
+		$item_description = __( 'Event', 'camptix-pagseguro' );
 		if ( ! empty( $this->camptix_options['event_name'] ) )
 			$item_description = $this->camptix_options['event_name'];
 

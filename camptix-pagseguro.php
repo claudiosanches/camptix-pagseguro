@@ -7,7 +7,7 @@
  * Author URI: http://claudiosmweb.com/
  * Version: 1.5.4
  * License: GPLv2 or later
- * Text Domain: ctpagseguro
+ * Text Domain: camptix-pagseguro
  * Domain Path: /languages/
  */
 
@@ -18,7 +18,7 @@
  */
 function ctpagseguro_admin_notice() {
 	$html = '<div class="error">';
-		$html .= '<p>' . sprintf( __( 'CampTix PagSeguro Gateway depends on the last version of %s to work!', 'ctpagseguro' ), '<a href="http://wordpress.org/extend/plugins/camptix/">CampTix</a>' ) . '</p>';
+		$html .= '<p>' . sprintf( __( 'CampTix PagSeguro Gateway depends on the last version of %s to work!', 'camptix-pagseguro' ), '<a href="http://wordpress.org/extend/plugins/camptix/">CampTix</a>' ) . '</p>';
 	$html .= '</div>';
 
 	echo $html;
@@ -30,7 +30,7 @@ function ctpagseguro_admin_notice() {
  * @return void
  */
 function ctpagseguro_plugins_loaded() {
-	load_plugin_textdomain( 'ctpagseguro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( 'camptix-pagseguro', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 	if ( ! class_exists( 'CampTix_Plugin' ) || ! class_exists( 'CampTix_Payment_Method' ) ) {
 		add_action( 'admin_notices', 'ctpagseguro_admin_notice' );
@@ -64,7 +64,7 @@ function ctpagseguro_action_links( $links ) {
 		'settings' => sprintf(
 			'<a href="%s">%s</a>',
 			admin_url( 'edit.php?post_type=tix_ticket&page=camptix_options&tix_section=payment' ),
-			__( 'Settings', 'ctpagseguro' )
+			__( 'Settings', 'camptix-pagseguro' )
 		)
 	);
 
