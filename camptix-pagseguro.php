@@ -46,9 +46,7 @@ class CampTix_PagSeguro {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		if ( class_exists( 'CampTix_Payment_Method' ) ) {
-			$this->includes();
-
-			add_action( 'camptix_load_addons', 'load_addons' );
+			add_action( 'camptix_load_addons', array( $this, 'load_addons' ) );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
 		} else {
 			add_action( 'admin_notices', array( $this, 'missing_dependencies_notice' ) );
